@@ -1,0 +1,395 @@
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+	<title>VANILLA.js</title>
+	<script src="js/Tween.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	<style>
+		*{font-family: 'Montserrat', sans-serif;}
+		body{margin:10%;}
+		h1{font-size:50px;}h2{font-size:40px;}h3{font-size:30px;}
+		h4{background:#FFFFC2;color:#C19A6B;padding:8px;display: inline;border:solid 1px #FFF8C6;}
+		.square , .sq2{width:50px;height:50px;border:solid 1px #000;position:relative;}
+		h5{color:teal;font-size:18px;}
+		p{color:#666;font-size:13px;}
+		.example{background:#D1D0CE;padding:20px;border:solid 1px #B6B6B4;color:#657383;-webkit-border-radius: 10px;border-radius: 10px;}
+		hr{margin: 40px 0;}
+		.red{color:red;}
+	</style>
+</head>
+
+<script type="text/javascript">
+<!--
+
+function $id(id) { return document.getElementById(id); }
+function $class(c) { return document.getElementsByClassName(c); }
+
+var hasClass = function (elem, className) { return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');}
+var addClass = function (elem, className) { if (!hasClass(elem, className)) { elem.className += ' ' + className;}}
+var removeClass = function (elem, className) { var newClass = ' ' + elem.className.replace( /[\t\r\n]/g, ' ') + ' '; if (hasClass(elem, className)) {while (newClass.indexOf(' ' + className + ' ') >= 0 ) { newClass = newClass.replace(' ' + className + ' ', ' '); } elem.className = newClass.replace(/^\s+|\s+$/g, '');}}
+
+
+/*
+window.onload = hoverAction;
+
+function hoverAction() {
+	var hoverTarget = $class("sq2").item(0);
+    hoverTarget.onmouseover = changeGray;
+}
+function changeGray() {
+	var hoverTarget = $class("sq2").item(0);
+    hoverTarget.style.backgroundColor = "gray";
+}
+*/
+
+
+
+
+//-->
+</script>
+
+<body>
+
+<h1>myVanilla</h1>
+
+<hr><!--********************************************************************************-->
+
+<h3>getElementsByを短縮</h3>
+<h4>$代用</h4>
+<h5>
+function $id(id) { return document.getElementById(id); }<br>
+function $class(c) { return document.getElementsByClassName(c); }<br><br>
+宣言後、$id('name')などで使う
+</h5>
+
+<div class="example"><!--xxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<div id="colorv1">COLOR</div>
+<div class="colorv2">COLOR</div>
+
+<button onclick="actionVariable()">start</button>
+
+	<script>
+	function actionVariable() {
+		$id('colorv1').style.color='red';
+		$class('colorv2').item(0).style.color='red';
+	}
+	</script>
+
+</div><!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<p>$はjQuaryとバッティングするので避ける。独自名称なので共有に気をつける。</p>
+
+<hr><!--********************************************************************************-->
+
+<h3>class名所得</h3>
+<h5>document.getElementsByClassName("hoge");</h5>
+
+<div class="example"><!--xxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<div class="hoge">sample1</div>
+<div class="hoge">sample2</div>
+<div class="hoge">sample3</div>
+
+<button onclick="actionClassName()">start</button>
+
+	<script>
+	function actionClassName() {
+		var elements = $class("hoge");
+		alert(elements.length+"個の要素を取得しました");
+		elements.each(
+			function (item) {
+				alert(item.id);
+			}
+		);
+	}
+	</script>
+
+</div><!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<p>同一classを全て所得。Objectとして返ってきてなさそうなので、$(.hoge)代用にはならない。querySelectorを使用。<br>
+   ちなみにgetElementById の方が getElementsByTagName / getElementsByClassName などより高速</p>
+
+<hr><!--********************************************************************************-->
+
+<h3>最初にあるクラスオブジェクト所得</h3>
+<h4>$(.hoge)代用?</h4>
+<h5>var elements = document.getElementsByClassName("ClassNameElem").item(0);</h5>
+
+<div class="example"><!--xxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<div class="ClassNameElem">sample1</div>
+
+<button onclick="actionClassNameElem()">start</button>
+
+	<script>
+	function actionClassNameElem() {
+		var elements = $class("ClassNameElem").item(0);
+		elements.style.color='red';
+	}
+	</script>
+
+</div><!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<p>item(0)なのでそのクラスの最初のオブジェクトを所得。querySelectorより高速な動作</p>
+
+<p></p>
+
+<hr><!--********************************************************************************-->
+
+<h3>MotionTween：移動</h3>
+<h4>.animate()代用</h4>
+<h5>t1 = new Tween(elements.style,'left',Tween.elasticEaseOut,0,500,4,'px');<br>
+	t1.start();
+</h5>
+
+<div class="example"><!--xxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<div class="square"></div>
+
+<button onclick="actionMotionTween()">start</button>
+
+	<script>
+	function actionMotionTween() {
+		var elements = $class("square").item(0);
+		t1 = new Tween(elements.style,'left',Tween.elasticEaseOut,0,500,4,'px');
+		t1.start();
+	}
+	</script>
+
+</div><!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<p>Tween.js使用。Tween.js自体もVanillaなので高速</p>
+
+<hr><!--********************************************************************************-->
+
+<h3>MotionTween：カラー変化</h3>
+<h4>.animate()代用</h4>
+<h5>colorTween = new ColorTween(document.getElementById('square2').style, 'backgroundColor', Tween.bounceEaseOut, 'FF0000', '0000FF', 3);<br>
+	colorTween.start();
+</h5>
+
+<div class="example"><!--xxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<div class="square" id="square2"></div>
+
+<button onclick="actionColorTween()">start</button>
+
+	<script>
+	function actionColorTween() {
+		var elements = $id("square2");
+		colorTween = new ColorTween(elements.style, 'backgroundColor', Tween.bounceEaseOut, 'FFFFFF', '0000FF', 3);
+		colorTween.start();
+	}
+	</script>
+
+</div><!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<p>Tween.js使用。Tween.js自体もVanillaなので高速</p>
+
+<hr><!--********************************************************************************-->
+
+<h3>マウスオーバー処理</h3>
+<h4>.hover()代用</h4>
+<h5>
+obj.onmouseover<br>
+obj.addEventListener("mouseover",func,false);
+</h5>
+
+<div class="example"><!--xxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<div class="sq2" id="sq2"></div>
+
+	<script>
+	window.onload = hoverAction;
+
+	function hoverAction() {
+	    var hoverTarget = $class('sq2').item(0);
+
+	    hoverTarget.addEventListener("mouseover", 
+			function () {  
+				hoverTarget.style.background='red';
+			}
+		, false);
+	    hoverTarget.addEventListener("mouseout", 
+	    		function () {  
+	    			hoverTarget.style.background='';
+	    		}
+	    , false);
+	}
+	</script>
+
+</div><!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<p>直に.onmouseoverやaddEventListener"mouseover"などある。長いが高速化の為には仕方がない</p>
+
+<hr><!--********************************************************************************-->
+
+<h3>画面サイズを取得するまとめ</h3>
+
+<div class="example"><!--xxxxxxxxxxxxxxxxxxxxxxxxxx-->
+screen.width   画面幅 ： 2560<br>
+screen.height   画面高 ： 1440<br>
+screen.availWidth   有効画面幅 ： 2560<br>
+screen.availHeight   有効画面高 ： 1414<br>
+window.innerWidth   表示領域幅 ： 1280 （IE非対応）<br>
+window.innerHeight   表示領域高 ： 1106 （IE非対応）<br>
+window.outerWidth   ウィンドウ幅 ： 1280 （IE非対応）<br>
+window.outerHeight   ウィンドウ高 ： 1201 （IE非対応）<br>
+$(window).width()   表示領域幅 ： 1265<br>
+$(window).height()   表示領域高 ： 1106<br>
+document.documentElement.clientWidth   表示領域幅 ： 1265<br>
+document.documentElement.clientHeight   表示領域高 ： 1106<br>
+document.width   ドキュメント幅 表示領域幅 ： undefined （IE非対応）<br>
+document.height   ドキュメント高 表示領域高 ： undefined （IE非対応）<br>
+$(document).width()   ドキュメント幅 ： 1265<br>
+$(document).height()   ドキュメント高 ： 1106<br>
+</div><!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<hr><!--********************************************************************************-->
+
+<h3>スタイル変化</h3>
+<h4>$css()代用</h4>
+<h5>
+[obj].style.color="red";
+</h5>
+
+<div class="example"><!--xxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<div id="cssChange">COLOR</div>
+
+<button onclick="cssChange()">start</button>
+
+	<script>
+	function cssChange() {
+	    $id("cssChange").style.color="red";
+	}
+	</script>
+
+</div><!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<p>使えるパラメーターは下記参照。変数の場合は「hoge +"px"」などとする</p>
+
+<hr><!--********************************************************************************-->
+
+<h3>.styleで使える一覧</h3>
+
+<div class="example"><!--xxxxxxxxxxxxxxxxxxxxxxxxxx-->
+background - 背景関連
+backgroundAttachment - スクロール時の背景動作
+backgroundColor - 背景色
+backgroundImage - 背景画像
+backgroundPosition - 背景画像位置
+backgroundPositionX - 背景画像位置
+backgroundPositionY - 背景画像位置
+backgroundRepeat - 背景画像の繰り返し
+border - ボーダー関連
+borderColor - ボーダー色
+borderStyle - ボーダースタイル
+borderWidth - ボーダーの太さ
+clear - テキストの回りこみ解除
+clip - 表示範囲
+color - テキストの色
+cssText - スタイルシート
+cursor - カーソル
+display - 表示形式
+filter - フィルタ
+font - フォント関連
+fontFamily - フォント
+fontSize - フォントサイズ
+fontStyle - フォントスタイル
+fontVariant - アルファベットの大文字化
+fontWeight - フォントの太さ
+height - 高さ
+left - 左からの位置
+letterSpacing - 文字間スペース
+lineHeight - 行の高さ
+listStyle - リストのスタイル
+listStyleImage - リストのスタイルイメージ
+listStylePosition - リストのスタイル位置
+listStyleType - リストのスタイルタイプ
+margin - マージン関連
+marginBottom - 下マージン
+marginLeft - 左マージン
+marginRight - 右マージン
+marginTop - 上マージン
+overflow - スクロールバー制御
+paddingBottom - 下パディング
+paddingLeft - 左パディング
+paddingRight - 右パディング
+paddingTop - 上パディング
+pageBreakAfter - 改ページ
+pageBreakBefore - 改ページ
+pixelHeight - 高さ
+pixelLeft - 左からの位置
+pixelTop - 上からの位置
+pixelWidth - 幅
+posHeight - 高さ
+position - 配置方式
+posLeft - 左からの位置
+posTop - 上からの位置
+posWidth - 幅
+styleFloat - 回り込み配置
+textAlign - テキストの表示位置
+textDecoration - テキスト修飾
+textDecorationBlink - テキスト修飾
+textDecorationLineThrough - テキスト修飾
+textDecorationNone - テキスト修飾
+textDecorationOverline - テキスト修飾
+textDecorationUnderline - テキスト修飾
+textIndent - テキストのインデント
+textTransform - 単語の先頭の大文字化
+top - 上からの位置
+verticalAlign - 縦方向のテキスト位置
+visibility - 可視・不可視
+width - 幅
+zIndex - 重なり順序
+</div><!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<hr><!--********************************************************************************-->
+
+<h3>クラス追加・削除</h3>
+<h4>.addClass()、.removeClass()代用</h4>
+<h5>
+ショートカット変数定義<br><br>
+var hasClass = function (elem, className) { return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');}<br>
+var addClass = function (elem, className) { if (!hasClass(elem, className)) { elem.className += ' ' + className;}}<br>
+var removeClass = function (elem, className) { var newClass = ' ' + elem.className.replace( /[\t\r\n]/g, ' ') + ' '; if (hasClass(elem, className)) {while (newClass.indexOf(' ' + className + ' ') >= 0 ) { newClass = newClass.replace(' ' + className + ' ', ' '); } elem.className = newClass.replace(/^\s+|\s+$/g, '');}}<br><br>/*then*/<br><br>
+addClass($id('sample'), 'sampleStyle');<br>
+removeClass($id('sample'), 'sampleStyle');
+</h5>
+
+<div class="example"><!--xxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<div id="classTest" class="classTest">COLOR</div>
+
+<button onclick="classTest1()">addClass</button>
+<button onclick="classTest2()">removeClass</button>
+
+	<script>
+	function classTest1() {
+	    addClass($id('classTest'), 'red');
+	}
+	function classTest2() {
+	    removeClass($id('classTest'), 'red');
+	}
+	</script>
+
+</div><!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+<p>ショートカット変数化で便利。<a href="http://toddmotto.com/creating-jquery-style-functions-in-javascript-hasclass-addclass-removeclass-toggleclass/">こちら参照</a>他に‘hasClass’‘toggleClass’がある</p>
+
+<hr><!--********************************************************************************-->
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+

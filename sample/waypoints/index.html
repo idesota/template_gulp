@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)https://dl.dropboxusercontent.com/u/5282479/wayp/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <link rel="stylesheet" href="">
+</head>
+<body>
+  <div style="height: 1000px;">
+    <p>↓スクロールしてください</p>
+    <br>
+    <p>↓スクロールしてください</p>
+    <br>
+    <p>↓スクロールしてください</p>
+    <br>
+  </div>
+
+  <div class="js-p1" style="height: 1000px; background-color: #c33;">
+    <p>↓スクロールしてください</p>
+    <br>
+    <p>↓スクロールしてください</p>
+    <br>
+    <p>↓スクロールしてください</p>
+    <br>
+  </div>
+
+  <div class="js-p2" style="height: 1000px; background-color: #33c;">
+    <p>↓スクロールしてください</p>
+    <br>
+    <p>↓スクロールしてください</p>
+    <br>
+    <p>↓スクロールしてください</p>
+    <br>
+  </div>
+  
+
+  <script type="text/javascript" src="./index_files/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="./index_files/jquery.waypoints.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      $('.js-p1').waypoint({
+        handler: function() {
+          alert('赤いエリアが入ってきました。');
+        },
+        offset: '100%'
+      });
+
+      $('.js-p2').waypoint({
+        handler: function() {
+          alert('青いエリアが半分入ってきました。');
+        },
+        offset: '50%'
+      });
+    });
+  </script>
+
+</body></html>
